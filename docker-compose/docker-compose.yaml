@@ -1,0 +1,32 @@
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:stable
+    container_name: homeassistant
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - 8123:8123
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - homeassistant-config:/config
+      - /run/dbus:/run/dbus:ro
+
+  emqx:
+    image: emqx/emqx:5.6.1
+    container_name: emqx
+    restart: always
+    ports:
+      - 18083:18083 # Dashboard default user
+      - 1883:1883 # MQTT
+      - 8083:8083 # MQTT/WS
+      - 8084:8084 # MQTT/WSS
+      - 8883:8883 # MQTT/TLS
+    volumes:
+      - emqx-data:/opt/emqx/data
+      - emqx-log:/opt/emqx/log
+
+volumes:
+  homeassistant-config:
+  emqx-data:
+  emqx-log:
