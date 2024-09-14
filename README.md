@@ -4,11 +4,11 @@
 
 ## 开发环境
 
-- **硬件**：ESP32S3 开发板，GA12-N20 减速电机
-- **开发工具**：Arduino，PlatformIO
-- **3D 建模软件**：Blender
+- **3D 建模**：Blender
 - **3D 打印机**：拓竹 A1
-- **服务部署**：Home Assistant，MQTT
+- **硬件设备**：ESP32S3 开发板，GA12-N20 减速电机
+- **开发工具**：Arduino，PlatformIO
+- **其他服务**：Home Assistant，MQTT
 
 ## 3D 打印
 
@@ -16,19 +16,27 @@
 
 ![alt text](docs/3d-print.png)
 
+## 开发板说明
+
+使用微雪 [ESP32-S3-DEV-KIT-N8R8](https://www.waveshare.net/wiki/ESP32-S3-DEV-KIT-N8R8) 开发板，板载 ESP32-S3 芯片，可通过一个 USB-C 接口同时进行 USB 和 UART 使用和开发，非常方便。
+
+![alt text](docs/ESP32-S3-DEV-KIT-N8R8.jpg)
+
 ## 编译固件
 
-使用 PlatformIO 编译固件，并上传到 ESP32S3 开发板，步骤如下：
+项目基于 Arduino 框架开发，并通过 PlatformIO 进行管理，详细步骤如下：
 
 ```bash
-# 初始化项目
-pio project init --board esp32-s3-devkitc-1 --project-option "framework=arduino"
+# 初始化项目，如何你的开发板和我一样可以跳过这一步
+$ pio boards esp32 # 查看支持的开发板
+$ pio project init --board esp32-s3-devkitc-1 --project-option "framework=arduino"
 
 # 查看已连接的设备，并修改 platformio.ini 文件中的上传和监视端口
-pio device list
+$ pio device list
 
 # 编译固件，上传并监视串口输出
-pio run --target upload && platformio device monitor
+$ pio run -t upload -e esp32s3
+$ pio device monitor -e esp32s3
 ```
 
 ## 服务部署
