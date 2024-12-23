@@ -27,16 +27,8 @@ CRGB leds[NUM_LEDS];
 unsigned long longPressStartMillis = 0;
 
 // 设备唯一标识
-const String chipID = String((uint32_t)ESP.getEfuseMac(), HEX);
-const String uniqueSSID = "fish_feeder_" + chipID;
-
-// MQTT 配置
-const char *mqtt_server = "192.168.22.59";
-const int mqtt_port = 1883;
-const char *MQTT_TOPIC_SWITCH = "fish_feeder_a/switch";
-const char *MQTT_TOPIC_BUTTON = "fish_feeder_a/button";
-const char *MQTT_TOPIC_HOUR = "fish_feeder_a/feed_hour";
-const char *MQTT_TOPIC_MINUTE = "fish_feeder_a/feed_minute";
+// const String chipID = String((uint32_t)ESP.getEfuseMac(), HEX);
+// const String uniqueSSID = "fish_feeder_" + chipID;
 
 // 每日任务时间设置
 bool feedTaskExecuted = false;
@@ -44,13 +36,13 @@ int feedHour = 8;
 int feedMinute = 30;
 
 const int feedSpeed = 50;      // 喂食电机速度，81-99 时停止，小于81时正转，数值越小速度越快，大于99时反转，数值越大速度越快
-const int feedDuration = 400;  // 喂食电机转动时间
+const int feedDuration = 320;  // 喂食电机转动时间 280,320
 const int feedCount = 1;       // 每次喂食次数
 const bool feedReverse = true; // 每次喂食前是否反转电机
 
 void setupWiFi()
 {
-  wifiManager.autoConnect(uniqueSSID.c_str());
+  wifiManager.autoConnect(DEVICE_ID);
   Serial.println("Connected to WiFi");
 }
 
@@ -176,10 +168,10 @@ void mqttCallback(char *topic, byte *payload, unsigned int length)
 
 void setupMQTT()
 {
-  mqttClient.setServer(mqtt_server, mqtt_port);
+  mqttClient.setServer(MQTT_SERVER, MQTT_PORT);
   mqttClient.setCallback(mqttCallback);
 
-  mqttClient.connect(uniqueSSID.c_str());
+  mqttClient.connect(DEVICE_ID);
   Serial.println("MQTT connected");
   mqttClient.subscribe(MQTT_TOPIC_SWITCH);
   mqttClient.subscribe(MQTT_TOPIC_BUTTON);

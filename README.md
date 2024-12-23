@@ -35,8 +35,8 @@ $ pio project init --board esp32-s3-devkitc-1 --project-option "framework=arduin
 $ pio device list
 
 # 编译固件，上传并监视串口输出
-$ pio run -t upload -e esp32s3
-$ pio device monitor -e esp32s3
+pio run -t upload -e feeder_a && \
+    pio device monitor -e feeder_a
 ```
 
 ## 服务部署
